@@ -1,0 +1,991 @@
+/* ==========================================================================
+   CSS VARIABLES
+   ========================================================================== */
+:root {
+    --skew-angle: 15deg;
+    --bg-main: #efe8d1; /*From OM-108*/
+    --bg-strumplate: #B8B371; /*from OM-108 Strum Pate*/
+    --bg-strumplate-bar: #888C8B; /*from OM-108 Strum Plate Bar*/
+    --bg-section: #E9E9E9; /*OM-108*/
+    --text-color: #2c3e50; /*from AI*/
+    --primary-blue: #1C2E76; /*From OM-108 Text*/
+    --button-blue: #1694CE; /*From OM-108 Blue Button*/
+    --button-blue-dark: #0056b3; /*from AI*/
+    --button-gray: #6B6D68; /*From OM-108 Gray Button*/
+    --black: #000;
+    --button-red: #E72019; /*From OM-108*/
+    --button-yellow: #EEE504; /*From OM-108 Yellow Button*/
+    --button-main: #EEE2BC; /*From OM-108 Main Button*/
+    --button-secondary: #DAD4BC; /*From OM-108 Secondary Button*/
+    
+    /* Interval Colors */
+    --interval-root: #FF5722;
+    --interval-perfect: #FFA726;
+    --interval-wholestep: #00BCD4;
+    --interval-major: #4CAF50;
+    --interval-minor: #2196F3;
+    --interval-tritone: #9C27B0;
+    --interval-gray: #ddd;
+}
+
+/* ==========================================================================
+   GLOBAL STYLES
+   ========================================================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: var(--text-color);
+}
+
+/* ==========================================================================
+   MAIN LAYOUT CONTAINERS
+   ========================================================================== */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 20px;
+}
+
+/* ==========================================================================
+   TAB NAVIGATION
+   ========================================================================== */
+.tab-navigation {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+.tab-button {
+    padding: 12px 24px;
+    border: none;
+    background: #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    transition: background 0.2s;
+}
+
+.tab-button:hover {
+    background: #e0e0e0;
+}
+
+.tab-button.active {
+    background: var(--primary-blue);
+    color: white;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+#sheetTab {
+    position: relative;
+    padding-top: 60px;
+}
+
+.main-menu-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.sheet-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;               /*Gap Between Sections*/
+    min-height: 200px;
+}
+
+/* ==========================================================================
+   SHARED BUTTON STYLES
+   ========================================================================== */
+
+
+
+.main-menu-button.active {
+    background: var(--button-blue);
+}
+
+.main-menu-button.active:hover,
+.main-menu-button:hover {
+    background: var(--black);
+}
+
+/* ==========================================================================
+   SHARED SMALL BUTTON STYLES
+   ========================================================================== */
+
+/* Small Button Wrappers */
+.button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 60px;
+}
+
+/* Small Button Text Labels */
+.button-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    text-align: center;
+    width: 100%;
+}
+
+/* Small Action Buttons (Remove, Collapse, Play) - Shared Base */
+.main-menu-button,
+.remove-chord,
+.remove-phrase-btn,
+.remove-section-btn,
+.collapse-section-btn,
+.collapse-phrase-btn,
+.play-phrase-btn {
+    color: var(--button-secondary);
+    border: none;
+    border-radius: 6px;
+    width: 50px;
+    height: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding: 0;
+    line-height: 1;
+}
+
+/* Add Buttons (chord, Phrase, Section) - Shared Base */
+.add-phrase-floating-btn,
+.add-phrase-card,
+.add-chord-card {
+    border: 2px dashed var(--button-gray);
+    background: var(--bg-section);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--button-gray);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.add-phrase-floating-btn:hover,
+.add-phrase-card:hover,
+.add-chord-card:hover {
+    background: var(--button-gray);
+    border-color: var(--black);
+    color: var(--black);
+}
+
+/* ==========================================================================
+   SECTION OBJECT
+   ========================================================================== */
+.section-container {
+    border: 4px solid var(--primary-blue);
+    padding: 20px;
+    margin-bottom: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.section-container.collapsed .section-controls,
+.section-container.collapsed .section-phrases-container {
+    display: none;
+}
+
+/*Section Header contains Section Title and Remove/Collapse Buttons*/
+.section-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--primary-blue);
+    padding-bottom: 12px;
+    gap: 10px;
+}
+
+/*When collapsed, remove bottom border and padding of header*/
+.section-container.collapsed .section-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: bold;
+    border: none;
+    padding: 1px;
+    flex: 1;
+    background: transparent;
+    color: var(--primary-blue);
+}
+
+.section-title:focus {
+    outline: none;
+    background: var(--bg-strumplate);
+}
+
+.section-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: var(--bg-strumplate);
+    border-radius: 6px;
+    border: 1px solid var(--button-gray);
+}
+
+.section-control-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+}
+
+.section-control-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-color);
+    text-transform: uppercase;
+}
+
+.section-control-select {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid var(--button-gray);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    min-width: 120px;
+    color: var(--text-color);
+}
+
+.section-control-select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+.section-control-input {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid var(--button-gray);
+    border-radius: 4px;
+    width: 80px;
+    color: var(--text-color);
+}
+
+.section-control-input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+.section-phrases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Section-Specific Buttons */
+.remove-section-btn {
+    background: var(--button-red);
+    font-size: 18px;
+}
+
+.remove-section-btn:hover {
+    background: var(--button-red);
+}
+
+.collapse-section-btn {
+    background: var(--button-gray);
+    margin-left: auto;
+}
+
+.collapse-section-btn:hover {
+    background: var(--black);
+}
+
+.add-phrase-floating-btn {
+    padding: 15px;
+    margin-bottom: 20px;
+    min-height: 100px;
+    font-size: 18px;
+}
+
+/* ==========================================================================
+   PHRASE OBJECT
+   ========================================================================== */
+.phrase-section {
+    border: 2px solid var(--primary-blue);
+    padding: 15px;
+    margin-bottom: 20px;
+    background: var(--bg-section);
+    border-radius: 8px;
+}
+
+
+/*Phrase Header contains Phrase Title, Play, Collapse, and remove button*/
+.phrase-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--primary-blue);
+    padding-bottom: 10px;
+    gap: 8px;
+}
+
+.phrase-section.collapsed .phrase-chords-container {
+    display: none;
+}
+
+/*When collapsed, remove bottom border and padding of header*/
+.phrase-section.collapsed .phrase-header {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0px;
+}
+
+.phrase-title {
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+    flex: 1;
+    color: var(--primary-blue);
+    background: transparent;
+}
+
+/*Phrase Title Focus (when Selected) Style*/
+.phrase-title:focus {
+    outline: none;
+    background: white;
+}
+
+.phrase-chords-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Phrase-Specific Buttons */
+.remove-phrase-btn {
+    background: var(--button-red);
+}
+
+.remove-phrase-btn:hover {
+    background: var(--button-red);
+}
+
+.collapse-phrase-btn {
+    background: var(--button-gray);
+}
+
+.collapse-phrase-btn:hover {
+    background: var(--black);
+}
+
+.play-phrase-btn {
+    background: var(--button-blue);
+}
+
+.play-phrase-btn:hover {
+    background: var(--black);
+}
+
+.add-phrase-card {
+    padding: 8px 15px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   CHORD CARD OBJECT
+   ========================================================================== */
+.sheet-chord-card {
+    border: 2px solid var(--button-gray);
+    padding: 6px;
+    border-radius: 6px;
+    width: 80px;
+    background: var(--bg-main);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: move;
+    transition: all 0.2s;
+}
+
+.sheet-chord-card:hover {
+    border-color: var(--primary-blue);
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+}
+
+/* Chord Card Selectors */
+.card-root-selector {
+    width: 100%;
+    padding: 5px 4px;
+    font-size: 24px;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: var(--text-color);
+}
+
+.card-root-selector:focus {
+    outline: 2px solid var(--primary-blue);
+    background: white;
+}
+
+.card-duration-selector {
+    width: 100%;
+    padding: 2px;
+    font-size: 28px;
+    font-family: 'Segoe UI Symbol', sans-serif;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    text-align: center;
+    margin-top: 2px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    color: var(--text-color);
+}
+
+.card-root-selector:hover,
+.card-duration-selector:hover {
+    background: var(--bg-strumplate);
+}
+
+.card-duration-selector:focus {
+    outline: 2px solid var(--primary-blue);
+    background: white;
+}
+
+/* Chord Quality Selection Mini Grid */
+.mini-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    width: 60px;
+    margin: 0 auto 5px auto;
+    transform: skewX(var(--skew-angle));
+}
+
+.mini-grid-button {
+    border: 1px solid var(--black);
+    border-radius: 3px;
+    background-color: var(--button-main);
+    height: 35px;
+    cursor: pointer;
+    transform: skewX(calc(var(--skew-angle) * -1));
+}
+
+.mini-grid-button.active {
+    background-color: var(--button-red);
+    border-color: var(--black);
+}
+
+.mini-grid-button.hidden {
+    visibility: hidden;
+}
+
+/* Mini Keyboard */
+.mini-keyboard {
+    display: none;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    padding: 5px 0;
+    height: 42px;
+    position: relative;
+    margin: 0 -0.5px;
+}
+
+.piano-key {
+    cursor: default;
+    transition: background-color 0.1s;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.piano-key.white {
+    width: 8px;
+    height: 35px;
+    background: white;
+    border-left: 0.5px solid var(--button-gray);
+    border-top: 0.5px solid var(--button-gray);
+    border-bottom: 0.5px solid var(--button-gray);
+    z-index: 1;
+}
+
+.piano-key.white:last-child {
+    border-right: 0.5px solid var(--button-gray);
+}
+
+.piano-key.black {
+    width: 5px;
+    height: 22px;
+    background: var(--black);
+    border: 0.5px solid var(--black);
+    margin-left: -3px;
+    margin-right: -3px;
+    z-index: 2;
+}
+
+.piano-key.active,
+.piano-key.white.active,
+.piano-key.black.active {
+    background: var(--button-red) !important;
+}
+
+/* Chord Card-Specific Buttons */
+.remove-chord-wrapper {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: none;
+}
+
+.remove-chord {
+    background: var(--button-red);
+    font-size: 18px;
+}
+
+.remove-chord:hover {
+    background: var(--button-red);
+}
+
+.sheet-chord-card:hover .remove-chord-wrapper {
+    display: flex;
+}
+
+.add-chord-card {
+    width: 48px;
+    min-height: 120px;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.add-chord-card span {
+    font-size: 36px;
+    color: var(--button-gray);
+    font-weight: 300;
+    line-height: 1;
+}
+
+.add-chord-card:hover span {
+    color: var(--primary-blue);
+}
+
+.add-chord-card .label {
+    font-size: 12px;
+    color: var(--button-gray);
+    font-weight: 500;
+}
+
+.add-chord-card:hover .label {
+    color: var(--primary-blue);
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+@media print {
+    .remove-phrase-btn, .remove-section-btn, .main-menu-container, .add-phrase-floating-btn, .add-chord-card, .add-phrase-card {
+        display: none;
+    }
+    
+    body {
+        background: white;
+        padding: 0;
+    }
+
+    .sheet-container {
+        display: block;
+    }
+    
+    .phrase-section {
+        border: none;
+        padding: 0;
+        margin-bottom: 30px;
+        break-inside: avoid;
+    }
+    
+    .phrase-header {
+        border-bottom: 2px solid var(--black);
+    }
+    
+    .phrase-title {
+        border: none;
+        font-size: 20px;
+        color: var(--black);
+    }
+
+    .phrase-chords-container {
+        display: grid;
+        gap: 10px;
+    }
+
+    .sheet-chord-card {
+        width: auto;
+        border: 1px solid var(--black);
+        break-inside: avoid;
+    }
+    
+    .remove-chord {
+        display: none !important;
+    }
+    
+    .mini-keyboard {
+        display: none !important;
+    }
+    
+    .tab-navigation,
+    #referenceTab {
+        display: none !important;
+    }
+    
+    #sheetTab {
+        display: block !important;
+    }
+}
+
+/* ==========================================================================
+   REFERENCE TAB STYLES
+   ========================================================================== */
+.reference-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.reference-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-blue);
+}
+
+#circleOfFifths {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 500px;
+}
+
+.circle-note {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.circle-note:hover .note-circle {
+    stroke-width: 3;
+}
+
+.circle-note .note-circle {
+    stroke: #333;
+    stroke-width: 2;
+}
+
+.circle-note .note-text {
+    font-size: 16px;
+    font-weight: bold;
+    fill: white;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+
+.circle-note .interval-text {
+    font-size: 10px;
+    fill: white;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+
+.omnichord-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 30px;
+    flex-wrap: nowrap;
+}
+
+.note-button {
+    padding: 12px 8px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    background: #888; /* Default - gray */
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    position: relative;
+    min-width: 45px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.note-button.major {
+    background: #4CAF50; /* Major intervals - green */
+}
+
+.note-button.minor {
+    background: #2196F3; /* Minor intervals - blue */
+}
+
+.note-button.perfect {
+    background: #FFA726; /* Perfect intervals - amber/gold */
+}
+
+.note-button.root {
+    background: #FF5722; /* Root - orange */
+    font-size: 16px;
+    padding: 15px 10px;
+    transform: scale(1.05);
+}
+
+.note-button.tritone {
+    background: #9C27B0; /* Tritone - purple */
+}
+
+.interval-info {
+    position: absolute;
+    bottom: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    color: #666;
+    white-space: nowrap;
+    font-weight: normal;
+}
+
+.chord-context {
+    text-align: center;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-top: 40px;
+}
+
+.chord-context p {
+    margin: 0;
+    color: #555;
+}
+
+/* Omnichord Grid */
+.omnichord-grid {
+    margin: 30px auto;
+    max-width: 900px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.note-headers {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-left: 75px;
+}
+
+.note-header {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--primary-blue);
+    padding: 5px;
+}
+
+.omnichord-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.row-label {
+    width: 60px;
+    font-weight: bold;
+    color: var(--primary-blue);
+    text-align: right;
+    padding-right: 15px;
+}
+
+.grid-buttons {
+    display: flex;
+    gap: 5px;
+    flex: 1;
+}
+
+.grid-button {
+    flex: 1;
+    padding: 20px 5px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    background: #f5f5f5;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 24px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-button:hover {
+    opacity: 0.8;
+}
+
+.grid-button.interval-root {
+    background: var(--interval-root);
+    color: white;
+    border-color: #E64A19;
+}
+
+.grid-button.interval-major {
+    background: var(--interval-major);
+    color: white;
+    border-color: #388E3C;
+}
+
+.grid-button.interval-minor {
+    background: var(--interval-minor);
+    color: white;
+    border-color: #1976D2;
+}
+
+.grid-button.interval-perfect {
+    background: var(--interval-perfect);
+    color: white;
+    border-color: #F57C00;
+}
+
+.grid-button.interval-wholestep {
+    background: var(--interval-wholestep);
+    color: white;
+    border-color: #0097A7;
+}
+
+.grid-button.interval-tritone {
+    background: var(--interval-tritone);
+    color: white;
+    border-color: #7B1FA2;
+}
+
+.grid-button.interval-gray {
+    background: var(--interval-gray);
+    color: #666;
+    border-color: #bbb;
+}
+
+.grid-button.dimmed {
+    opacity: 0.25;
+    filter: grayscale(50%);
+}
+
+.grid-button .interval-label {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   INTERVAL LEGEND
+   ========================================================================== */
+.interval-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-color {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 2px solid #333;
+}
+
+.legend-color.root {
+    background: var(--interval-root);
+}
+
+.legend-color.perfect {
+    background: var(--interval-perfect);
+}
+
+.legend-color.wholestep {
+    background: var(--interval-wholestep);
+}
+
+.legend-color.major {
+    background: var(--interval-major);
+}
+
+.legend-color.minor {
+    background: var(--interval-minor);
+}
+
+.legend-color.tritone {
+    background: var(--interval-tritone);
+}
+
+.legend-label {
+    font-size: 14px;
+    color: var(--text-color);
+    font-weight: 500;
+}

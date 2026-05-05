@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omnichord Sheet Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-button active" data-tab="sheet">Chord Sheet</button>
+            <button class="tab-button" data-tab="reference">Chord Reference</button>
+        </div>
+
+        <!-- Sheet Tab Content -->
+        <div id="sheetTab" class="tab-content active">
+            <!-- Action Buttons -->
+            <div class="main-menu-container">
+            <div class="button-wrapper">
+                <div class="button-label">Keyboard</div>
+                <button id="keyboardBtn" class="main-menu-button" title="Toggle Keyboard"></button>
+            </div>
+            <div class="button-wrapper">
+                <div class="button-label">Load</div>
+                <button id="loadBtn" class="main-menu-button" title="Load from JSON"></button>
+            </div>
+            <div class="button-wrapper">
+                <div class="button-label">Save</div>
+                <button id="saveBtn" class="main-menu-button" title="Save to JSON"></button>
+            </div>
+            <div class="button-wrapper">
+                <div class="button-label">Print</div>
+                <button id="printBtn" class="main-menu-button" title="Print Sheet"></button>
+            </div>
+        </div>
+
+        <!-- Sheet Container -->
+        <div id="sheetContainer" class="sheet-container">
+            <!-- Phrases added here -->
+        </div>
+
+            <!-- Add Phrase Button -->
+            <button id="addPhraseBtn" class="add-phrase-floating-btn" title="Add Section">+ Add Section</button>
+        </div>
+
+        <!-- Reference Tab Content -->
+        <div id="referenceTab" class="tab-content">
+            <div class="reference-container">
+                <svg id="circleOfFifths" viewBox="-200 -200 400 400" width="500" height="500">
+                    <!-- Circle elements will be added by JavaScript -->
+                </svg>
+
+                <div class="interval-legend">
+                    <div class="legend-item">
+                        <div class="legend-color root"></div>
+                        <span class="legend-label">Root</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color perfect"></div>
+                        <span class="legend-label">Perfect Interval</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color wholestep"></div>
+                        <span class="legend-label">Whole Step</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color major"></div>
+                        <span class="legend-label">Major Quality</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color minor"></div>
+                        <span class="legend-label">Minor Quality</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color tritone"></div>
+                        <span class="legend-label">Tritone</span>
+                    </div>
+                </div>
+
+                <div class="omnichord-grid">
+                    <div class="omnichord-row">
+                        <div class="row-label">Maj</div>
+                        <div class="grid-buttons" id="majRow"></div>
+                    </div>
+                    <div class="omnichord-row">
+                        <div class="row-label">Min</div>
+                        <div class="grid-buttons" id="minRow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
